@@ -1,0 +1,24 @@
+---
+# vars file for common
+
+ common_packages: 
+#   - apt-transport-https
+#   - lvm2
+#   - xfsprogs
+#   - build-essential
+#   - libgnutls-dev
+#   - libreadline-dev
+#   - libncurses-dev
+#   - pkg-config
+#   - graphviz
+#   - iptables-persistent
+#   - acl
+   - links
+   - zip
+   - unzip
+   - mc
+   - htop
+   - apt-transport-https
+   - cowsay
+
+ additional_ppas: []

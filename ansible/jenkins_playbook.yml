@@ -1,0 +1,13 @@
+- hosts: jenkins_nodes
+
+  become: true
+  
+  vars:
+    jenkins_hostname: 192.168.50.21
+    java_packages:
+      - openjdk-8-jdk
+    # ansible_python_interpreter: /usr/bin/python3
+  roles:
+    # - role: jenkins
+    - role: geerlingguy.java
+    - role: geerlingguy.jenkins

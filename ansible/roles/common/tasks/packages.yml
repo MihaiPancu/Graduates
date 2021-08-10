@@ -1,0 +1,53 @@
+# prepare initial conditions on the machine
+
+   - name: Set hosts file
+     #sudo: yes
+     lineinfile:
+        dest: /etc/hosts
+        insertafter: '^127.0.0.1 localhost'
+        line: "{{ansible_ssh_host}} {{ansible_hostname}}"
+
+   - name: Add PPAs
+     apt_repository:
+       repo: "{{ item }}"
+       state: present
+     with_items: "{{ additional_ppas }}"
+     when: additional_ppas is defined
+     
+   - name: Configure dpkg
+     shell: "dpkg --configure -a"
+     tags:
+        - apt_update
+     changed_when: false
+ 
+   - name: Run apt-get update & upgrade
+     apt:
+        update_cache: yes
+        upgrade: safe
+        force_apt_get: yes
+        autoremove: yes
+        cache_valid_time: 604800 #cache is valid 1 week
+     tags:
+        - apt_update
+
+   - name: Install dependency packages latest versions
+     apt:
+        name: "{{ common_packages }}"
+        state: latest
+        force: yes
+
+   - name: Remove some packages 
+     apt:
+        name: "{{ remove_packages }}"
+        state: absent
+        force: yes
+     when: remove_packages is defined
+     ignore_errors: True
+   
+   - name: Install dependency packages latest versions
+     apt:
+        name: "{{ host_packages }}"
+        state: latest
+        force: yes
+     when: host_packages is defined
+     ignore_errors: True

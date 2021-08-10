@@ -1,0 +1,6 @@
+---
+# vars file for maven
+
+maven_archive: "apache-maven-{{maven_version}}-bin.zip"
+maven_url: "https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.zip"
+

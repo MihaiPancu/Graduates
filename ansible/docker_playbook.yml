@@ -1,0 +1,15 @@
+- hosts: docker_nodes:localhost
+
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  vars:
+    secure_hosts:
+      - url: tools.local
+        port: 5000
+    restartable_services:
+      - docker
+
+  roles:
+  - docker

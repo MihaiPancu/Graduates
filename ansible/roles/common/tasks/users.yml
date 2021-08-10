@@ -1,0 +1,40 @@
+---
+#local users setup tasks
+
+    - name: Add required groups
+      group:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ sys_groups }}"
+      when: sys_groups is defined
+      ignore_errors: True
+      
+    - name: Configure users
+      user: 
+        name: "{{ item.username }}"
+        comment: "{{ item.full_name }}"
+        uid: "{{ item.uid }}"
+        groups: "{{ item.groups }}"
+        shell: "{{ item.shell }}"
+      with_items: "{{ users }}"
+      when: users is defined
+      ignore_errors: True
+      
+
+    - name: Add authorized keys to users
+      authorized_key:
+          user: "{{ item.username }}"
+          key: "ssh-rsa {{ item.pubkey }} {{item.full_name}}"
+      with_items: "{{ users }}"
+      when: users is defined 
+      ignore_errors: True
+
+    - name: Add some users to sodoers
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        line: '{{item}} ALL=(ALL) NOPASSWD:ALL'
+      with_items: "{{ sudoers }}"
+      when: sudoers is defined
+      ignore_errors: True
+   

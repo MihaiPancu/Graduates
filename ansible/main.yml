@@ -1,0 +1,23 @@
+---
+- hosts: all
+
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  roles:
+  - common
+
+- hosts: docker_nodes
+
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  vars:
+    restartable_services:
+      - docker
+
+  roles:
+  - docker
+  - maven

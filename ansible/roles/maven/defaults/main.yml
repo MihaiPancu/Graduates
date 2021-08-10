@@ -1,0 +1,14 @@
+---
+# defaults file for maven
+
+maven_version: 3.8.1
+maven_mirror: http://mirrors.m247.ro
+packages:
+  - git
+  - unzip
+  - mc
+  - zip
+  - tree
+  - htop
+  - stress
+

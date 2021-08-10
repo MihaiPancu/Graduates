@@ -1,0 +1,13 @@
+---
+- hosts: all
+
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  vars:
+    remove_packages:
+      - cowsay
+
+  roles:
+  - common

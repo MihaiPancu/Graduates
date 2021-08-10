@@ -1,0 +1,24 @@
+---
+
+- hosts: all 
+
+  vars:
+    maven_version: 3.8.1
+    maven_mirror: http://mirrors.m247.ro
+    maven_archive: "apache-maven-{{ maven_version }}-bin.tar.gz"
+    maven_url: "{{ maven_mirror }}/apache/maven/maven-3/{{ maven_version }}/binaries/{{ maven_archive }}"
+
+  tasks:
+
+    - name: download and unarchive maven {{ maven_version }} - no copy
+      unarchive:
+        src: "{{ maven_url }}"
+        dest: /opt
+        copy: no
+        creates: "/opt/apache-maven-{{ maven_version }}.zip"
+
+    - name: Create symlink for maven
+      file:
+        src: "/opt/apache-maven-{{ maven_version }}/bin/mvn"
+        dest: "/usr/bin/mvn"
+        state: link

@@ -1,0 +1,9 @@
+---
+# tasks file for common
+#@TO DO: Check if system needs reboot, and proceed only if we manually set the flag
+
+  - name: run apt packages related tasks
+    include: packages.yml
+
+  - name: run user configuration related tasks
+    include: users.yml

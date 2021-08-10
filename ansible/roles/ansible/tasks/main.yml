@@ -1,0 +1,27 @@
+---
+# tasks file for ansible
+  - name: Install prerequisites for ansible's PPA
+    apt:
+      name: software-properties-common
+      state: present
+      update_cache: yes
+
+  - name: Add ansible PPA
+    apt_repository:
+      repo: 'ppa:ansible/ansible'
+
+  - name: Install ansible
+    apt:
+      name: ansible
+      state: present
+      update_cache: yes
+      cache_valid_time: 100000
+      only_upgrade: yes
+  
+  - name: Get ansible version
+    command: ansible --version
+    register: a_version
+
+  - name: Display ansible version
+    debug: 
+      var: a_version.stdout_lines[0]

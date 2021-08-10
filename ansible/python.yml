@@ -1,0 +1,8 @@
+---
+
+- hosts: all 
+
+  tasks:
+
+    - name: install python3
+      apt: pkg=python3

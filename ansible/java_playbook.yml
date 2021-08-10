@@ -1,0 +1,8 @@
+- hosts: maven_nodes:localhost
+
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  roles:
+  - java8
