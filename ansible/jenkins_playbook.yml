@@ -3,7 +3,7 @@
   become: true
   
   vars:
-    jenkins_hostname: 192.168.50.21
+    jenkins_hostname: localhost
     java_packages:
       - openjdk-8-jdk
     # ansible_python_interpreter: /usr/bin/python3

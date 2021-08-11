@@ -45,14 +45,15 @@
     path: "{{ jenkins_home }}/updates/default.json"
     regexp: "1d;$d"
 
-- name: Copy Jenkins plugins.
-  copy:
-    src: "{{ item }}"
-    dest: /var/lib/jenkins/plugins/
-    owner: root
-    mode: 600
-  with_fileglob:
-    - /vagrant/ansible/plugins/*
+# - name: Copy Jenkins plugins.
+#   copy:
+#     src: "{{ item }}"
+#     dest: /var/lib/jenkins/plugins/
+#     owner: root
+#     mode: 600
+#   with_fileglob:
+#     - /vagrant/ansible/plugins/*
+#   notifiy: restart jenkins
 
 - name: Install Jenkins plugins using password.
   jenkins_plugin:
