@@ -1,5 +1,5 @@
 ---
 # tasks file for java8
-- name: Install Oracle Java 11
+- name: Install Oracle Java 
   apt: pkg=default-jre
   
