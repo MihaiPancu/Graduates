@@ -1,0 +1,74 @@
+pipeline {
+    agent any
+    
+    environment {
+        imagename = "mihaigeorgemp98/aplicatie_spring"
+        registryCredential = 'docker-credentials'
+        dockerImage = ''
+    }
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'main', url: 'https://github.com/MihaiPancu/SpringBootApp'
+            }
+        }
+        stage('Build package') {
+            steps {
+                
+                withMaven(maven: 'maven-tool', options: [junitPublisher(healthScaleFactor: 1.0)]) {
+
+                    sh "mvn -B clean package"
+                }
+            }
+        }
+        
+        stage('Building image') {
+          steps{
+            script {
+              dockerImage = docker.build imagename
+            }
+          }
+        }
+        
+        stage('Push Image') {
+          steps{
+            script {
+              docker.withRegistry( '', registryCredential ) {
+                dockerImage.push('latest')
+    
+              }
+            }
+
+          }
+        }
+        
+            stage('Remove Unused docker image') {
+              steps{
+                sh "docker rmi $imagename:latest"
+              }
+            }
+
+            stage('Connect over with ssh and remove containers') {
+                   steps {
+                       catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                        
+                        script {
+                            sh "ssh vagrant@192.168.50.22 'sudo docker kill \$(sudo docker ps -q)'"
+                        }
+                   }
+                    
+                } 
+            }
+            
+            stage('Connect over with ssh and deploy container') {
+                   steps {
+                    script {
+                        sh "ssh vagrant@192.168.50.22 'sudo docker run -it -d -p 8001:8080 mihaigeorgemp98/aplicatie_spring'"
+                    }
+                    
+                } 
+            }
+        
+    }
+}
